@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100c14">
+  <title>Entrelinhas — Sua história, organizada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#100c14;--panel:#19131f;--panel2:#21192a;--line:#44334f;--lilac:#b47af5;--lilac2:#d9b7ff;--cream:#f4eaf7;--muted:#b8aabe;--rose:#e8a8d9}
+    *{box-sizing:border-box} html{min-height:100%;background:var(--bg)} body{margin:0;min-height:100vh;color:var(--cream);font-family:Inter,system-ui,sans-serif;background:radial-gradient(ellipse at 14% 15%,#30203a 0,transparent 37%),radial-gradient(ellipse at 88% 85%,#24152f 0,transparent 34%),var(--bg)}
+    button,input{font:inherit} button{cursor:pointer}
+    .shell{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(380px,.9fr);max-width:1440px;margin:auto}
+    .story{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(28px,6vw,88px);overflow:hidden;border-right:1px solid #33263b}
+    .story:before,.story:after{content:"";position:absolute;pointer-events:none;border:1px solid #4c3656;border-radius:50%;width:440px;height:440px;opacity:.35}.story:before{left:-260px;bottom:-180px}.story:after{right:-300px;top:-240px;width:600px;height:600px}
+    .brand{position:relative;z-index:1;display:flex;align-items:center;gap:14px}.feather{width:47px;height:47px;color:var(--lilac2);filter:drop-shadow(0 0 12px #b47af544)}
+    .brand-name{font-family:"Playfair Display",Georgia,serif;font-size:clamp(28px,3.3vw,43px);letter-spacing:-1px}.tagline{font-size:10px;letter-spacing:3px;color:var(--muted);margin-top:4px}
+    .hero{position:relative;z-index:1;max-width:590px;margin:54px 0}.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--lilac2)}h1{font:500 clamp(42px,5vw,70px)/1.08 "Playfair Display",Georgia,serif;letter-spacing:-1.7px;margin:20px 0}h1 em{color:var(--lilac2);font-weight:500}.hero p{font-size:15px;line-height:1.8;color:#c7b9ce;max-width:430px}
+    .quote{border-left:2px solid var(--lilac);padding:4px 0 4px 18px;color:#dfcfe5;font:italic 18px/1.6 "Playfair Display",Georgia,serif;margin-top:35px}
+    .features{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:600px}.feature{border-top:1px solid var(--line);padding-top:14px}.feature-icon{color:var(--lilac2);font-size:20px}.feature strong{display:block;font-size:12px;margin:10px 0 6px}.feature span{font-size:11px;line-height:1.6;color:var(--muted)}
+    .auth-side{display:flex;align-items:center;justify-content:center;padding:clamp(22px,5vw,70px);position:relative;z-index:2}.auth-card{width:100%;max-width:430px;background:linear-gradient(145deg,#1b1422f5,#120e17f7);border:1px solid #493653;border-radius:22px;padding:clamp(24px,4vw,42px);box-shadow:0 25px 80px #0006;position:relative}.card-mark{text-align:center;margin-bottom:23px}.card-mark svg{width:32px;height:32px;color:var(--lilac2)}.card-mark h2{font:500 30px "Playfair Display",Georgia,serif;margin:9px 0 8px}.card-mark p{color:var(--muted);font-size:12px;line-height:1.6;margin:0}
+    .field{margin:17px 0}.field label{display:block;font-size:11px;color:#d9cce0;margin-bottom:8px}.input-wrap{display:flex;align-items:center;gap:10px;background:#100c15;border:1px solid #51405c;border-radius:10px;padding:0 13px;transition:.2s}.input-wrap:focus-within{border-color:var(--lilac);box-shadow:0 0 0 3px #b47af51c}.input-wrap span{color:var(--lilac2);font-size:15px}.input-wrap input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:var(--cream);padding:14px 0;font-size:13px}.input-wrap input::placeholder{color:#82748c}.inline-row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:11px;color:var(--muted);margin:13px 0 20px}.remember{display:flex;align-items:center;gap:7px}.remember input{accent-color:var(--lilac)}.text-button{background:none;border:0;color:var(--lilac2);text-decoration:underline;text-underline-offset:3px;font-size:11px;padding:0}.primary{width:100%;border:0;border-radius:10px;padding:14px 16px;color:#1a1022;font-weight:700;font-size:13px;background:linear-gradient(100deg,#bd86fb,#df9fe3);box-shadow:0 8px 24px #a35bd52b;transition:transform .15s,filter .15s}.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}.switch{text-align:center;color:var(--muted);font-size:11px;margin:24px 0 0}.switch button{margin-left:5px}.fineprint{text-align:center;color:#8d7d96;font-size:10px;line-height:1.6;margin:22px 0 0}.notice{display:none;margin:14px 0 0;padding:11px 12px;border-radius:9px;background:#39243d;color:#f0d8ff;font-size:11px;line-height:1.5}.notice.show{display:block}.footer{position:absolute;bottom:18px;right:20px;font-size:9px;color:#78677f;letter-spacing:1px}
+    @media(max-width:850px){.shell{grid-template-columns:1fr}.story{padding:28px 24px 22px;border-right:0;border-bottom:1px solid #33263b}.hero{margin:32px 0 26px}.hero h1{font-size:clamp(40px,10vw,58px)}.hero p{font-size:13px}.quote{font-size:16px;margin-top:22px}.features{gap:12px}.feature span{font-size:10px}.auth-side{padding:28px 18px 54px}.auth-card{max-width:480px}.footer{display:none}}
+    @media(max-width:420px){.story{padding:24px 20px 18px}.brand-name{font-size:30px}.tagline{letter-spacing:2px;font-size:9px}.features{gap:9px}.feature strong{font-size:11px}.feature span{font-size:9px}.auth-card{padding:25px 21px;border-radius:18px}.card-mark h2{font-size:27px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="story" aria-label="Apresentação do Entrelinhas">
+      <div class="brand">
+        <svg class="feather" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M53 7C34 8 16 20 12 38c-2 9 4 15 12 11C42 40 50 22 53 7Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 56C21 41 31 28 49 12M19 43l-8-1m15-8-8-4m18-6-2-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8 57l10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <div><div class="brand-name">Entrelinhas</div><div class="tagline">SUA HISTÓRIA, ORGANIZADA</div></div>
+      </div>
+      <div class="hero">
+        <div class="eyebrow">✦ Seu universo começa aqui</div>
+        <h1>Grandes histórias<br>começam com <em>uma linha.</em></h1>
+        <p>Um refúgio para suas ideias, personagens e mundos. Organize seus projetos literários e dê espaço para cada história florescer.</p>
+        <div class="quote">“Toda história merece um lugar para existir.”</div>
+      </div>
+      <div class="features">
+        <div class="feature"><div class="feature-icon">✧</div><strong>Escreva</strong><span>Seus capítulos, no seu ritmo.</span></div>
+        <div class="feature"><div class="feature-icon">♧</div><strong>Organize</strong><span>Personagens, lugares e ideias.</span></div>
+        <div class="feature"><div class="feature-icon">⌁</div><strong>Crie com calma</strong><span>Um espaço só para suas histórias.</span></div>
+      </div>
+    </section>
+    <section class="auth-side" aria-label="Acesso à conta">
+      <div class="auth-card">
+        <div class="card-mark">
+          <svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M53 7C34 8 16 20 12 38c-2 9 4 15 12 11C42 40 50 22 53 7Z" stroke="currentColor" stroke-width="2.2"/><path d="M9 56C21 41 31 28 49 12M19 43l-8-1m15-8-8-4m18-6-2-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <h2 id="form-title">Bem-vinda de volta</h2>
+          <p id="form-subtitle">Entre na sua conta e continue escrevendo suas histórias.</p>
+        </div>
+        <form id="auth-form">
+          <div class="field" id="name-field" hidden><label for="name">Como podemos te chamar?</label><div class="input-wrap"><span>✧</span><input id="name" name="name" autocomplete="name" placeholder="Seu nome"></div></div>
+          <div class="field"><label for="email">E-mail</label><div class="input-wrap"><span>✉</span><input id="email" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required></div></div>
+          <div class="field" id="password-field"><label for="password">Senha</label><div class="input-wrap"><span>♙</span><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Sua senha" required minlength="8"></div></div>
+          <div class="inline-row" id="login-options"><label class="remember"><input type="checkbox" id="remember"> Lembrar de mim</label><button type="button" class="text-button" id="forgot">Esqueceu sua senha?</button></div>
+          <button class="primary" id="submit-button" type="submit">Entrar</button>
+        </form>
+        <div class="notice show" id="notice" role="status">Prévia visual: o formulário ainda não cria contas nem envia dados. Vamos conectar a autenticação em uma próxima etapa.</div>
+        <p class="switch" id="switch-row">Ainda não tem uma conta? <button class="text-button" id="switch-mode" type="button">Criar conta</button></p>
+        <p class="fineprint">Suas histórias merecem cuidado. A proteção real da conta será configurada antes da publicação.</p>
+      </div>
+    </section>
+  </main>
+  <div class="footer">ENTRELINHAS · UM REFÚGIO PARA QUEM ESCREVE</div>
+  <script>
+    const form = document.querySelector('#auth-form');
+    const title = document.querySelector('#form-title');
+    const subtitle = document.querySelector('#form-subtitle');
+    const nameField = document.querySelector('#name-field');
+    const passwordField = document.querySelector('#password-field');
+    const loginOptions = document.querySelector('#login-options');
+    const submit = document.querySelector('#submit-button');
+    const switchRow = document.querySelector('#switch-row');
+    const switchMode = document.querySelector('#switch-mode');
+    const forgot = document.querySelector('#forgot');
+    const notice = document.querySelector('#notice');
+    let mode = 'login';
+    function render(next) {
+      mode = next;
+      const recovery = mode === 'recovery';
+      const signup = mode === 'signup';
+      title.textContent = recovery ? 'Vamos recuperar seu acesso' : signup ? 'Crie seu espaço' : 'Bem-vinda de volta';
+      subtitle.textContent = recovery ? 'Informe seu e-mail. Depois conectaremos o envio seguro do link.' : signup ? 'Comece sua jornada literária no Entrelinhas.' : 'Entre na sua conta e continue escrevendo suas histórias.';
+      nameField.hidden = !signup;
+      passwordField.hidden = recovery;
+      document.querySelector('#password').required = !recovery;
+      document.querySelector('#password').autocomplete = signup ? 'new-password' : 'current-password';
+      loginOptions.hidden = signup || recovery;
+      submit.textContent = recovery ? 'Enviar link de recuperação' : signup ? 'Criar minha conta' : 'Entrar';
+      switchRow.hidden = recovery;
+      switchMode.textContent = signup ? 'Entrar' : 'Criar conta';
+      notice.textContent = 'Prévia visual: este formulário ainda não autentica nem envia dados. Vamos conectar a autenticação com segurança na próxima etapa.';
+      notice.classList.add('show');
+    }
+    switchMode.addEventListener('click', () => render(mode === 'signup' ? 'login' : 'signup'));
+    forgot.addEventListener('click', () => render('recovery'));
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      notice.textContent = 'A tela está pronta para a próxima etapa, mas o login ainda não está conectado. Nenhum dado foi enviado.';
+      notice.classList.add('show');
+    });
+  </script>
+</body>
+</html>
