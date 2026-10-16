@@ -190,13 +190,14 @@ form.addEventListener('submit', async (event) => {
       showNotice('Login realizado com sucesso!');
     }
 
- } catch (error) {
+
+  } catch (error) {
     console.error('Erro de autenticação:', error);
 
     showNotice(
-      'Não foi possível concluir. Confira os dados e tente novamente. ' +
-      'Se o problema continuar, verifique as configurações do Supabase.'
+      'Erro: ' + (error.message || 'Não foi possível identificar a causa.')
     );
+
 
   } finally {
     submit.disabled = false;
