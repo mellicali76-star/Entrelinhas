@@ -68,49 +68,87 @@
   <div class="footer">ENTRELINHAS · UM REFÚGIO PARA QUEM ESCREVE</div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-   const entrelinhasSupabase = window.supabase.createClient(
-  'https://zdzjyruvcvvqcpyhqfys.supabase.co/rest/v1/',
-  '  https:// sb_publishable_HNifDynnY22tSg_gSD_5aQ_7k7UBmbn'
+   
+const entrelinhasSupabase = window.supabase.createClient(
+  'https://zdzjyruvcvvqcpyhqfys.supabase.co',
+  'sb_publishable_HNifDynnY22tSg_gSD_5aQ_7k7UBmbn'
 );
-    const form = document.querySelector('#auth-form');
-    const title = document.querySelector('#form-title');
-    const subtitle = document.querySelector('#form-subtitle');
-    const nameField = document.querySelector('#name-field');
-    const passwordField = document.querySelector('#password-field');
-    const loginOptions = document.querySelector('#login-options');
-    const submit = document.querySelector('#submit-button');
-    const switchRow = document.querySelector('#switch-row');
-    const switchMode = document.querySelector('#switch-mode');
-    const forgot = document.querySelector('#forgot');
-    const notice = document.querySelector('#notice');
-    let mode = 'login';
-    function render(next) {
-      mode = next;
-      const recovery = mode === 'recovery';
-      const signup = mode === 'signup';
-      title.textContent = recovery ? 'Vamos recuperar seu acesso' : signup ? 'Crie seu espaço' : 'Bem-vinda de volta';
-      subtitle.textContent = recovery ? 'Informe seu e-mail. Depois conectaremos o envio seguro do link.' : signup ? 'Comece sua jornada literária no Entrelinhas.' : 'Entre na sua conta e continue escrevendo suas histórias.';
-      nameField.hidden = !signup;
-      passwordField.hidden = recovery;
-      document.querySelector('#password').required = !recovery;
-      document.querySelector('#password').autocomplete = signup ? 'new-password' : 'current-password';
-      loginOptions.hidden = signup || recovery;
-      submit.textContent = recovery ? 'Enviar link de recuperação' : signup ? 'Criar minha conta' : 'Entrar';
-      switchRow.hidden = recovery;
-      switchMode.textContent = signup ? 'Entrar' : 'Criar conta';
-      notice.textContent = 'Prévia visual: este formulário ainda não autentica nem envia dados. Vamos conectar a autenticação com segurança na próxima etapa.';
-      notice.classList.add('show');
-    }
-    switchMode.addEventListener('click', () => render(mode === 'signup' ? 'login' : 'signup'));
-    form.addEventListener('submit', async (event) => {
+
+const form = document.querySelector('#auth-form');
+const title = document.querySelector('#form-title');
+const subtitle = document.querySelector('#form-subtitle');
+const nameField = document.querySelector('#name-field');
+const nameInput = document.querySelector('#name');
+const emailInput = document.querySelector('#email');
+const passwordField = document.querySelector('#password-field');
+const passwordInput = document.querySelector('#password');
+const loginOptions = document.querySelector('#login-options');
+const submit = document.querySelector('#submit-button');
+const switchRow = document.querySelector('#switch-row');
+const switchMode = document.querySelector('#switch-mode');
+const forgot = document.querySelector('#forgot');
+const notice = document.querySelector('#notice');
+
+let mode = 'login';
+
+function showNotice(message) {
+  notice.textContent = message;
+  notice.classList.add('show');
+}
+
+function render(next) {
+  mode = next;
+  const signup = mode === 'signup';
+  const recovery = mode === 'recovery';
+
+  title.textContent = recovery
+    ? 'Recupere seu acesso'
+    : signup ? 'Crie seu espaço' : 'Bem-vinda de volta';
+
+  subtitle.textContent = recovery
+    ? 'Informe seu e-mail para receber as instruções.'
+    : signup
+      ? 'Comece sua jornada literária no Entrelinhas.'
+      : 'Entre na sua conta e continue escrevendo suas histórias.';
+
+  nameField.hidden = !signup;
+  nameInput.required = signup;
+  passwordField.hidden = recovery;
+  passwordInput.required = !recovery;
+  passwordInput.autocomplete = signup ? 'new-password' : 'current-password';
+  loginOptions.hidden = signup || recovery;
+  forgot.hidden = mode !== 'login';
+  switchRow.hidden = recovery;
+
+  submit.textContent = recovery
+    ? 'Enviar instruções'
+    : signup ? 'Criar minha conta' : 'Entrar';
+
+  switchMode.textContent = signup ? 'Entrar' : 'Criar conta';
+
+  showNotice(
+    signup
+      ? 'Preencha os dados para criar sua conta.'
+      : recovery
+        ? 'Digite o e-mail associado à sua conta.'
+        : 'Entre com seu e-mail e senha.'
+  );
+}
+
+switchMode.addEventListener('click', () => {
+  render(mode === 'signup' ? 'login' : 'signup');
+});
+
+forgot.addEventListener('click', () => render('recovery'));
+
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
 
-  const email = document.querySelector('#email').value.trim();
-  const password = document.querySelector('#password').value;
-  const name = document.querySelector('#name').value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const name = nameInput.value.trim();
 
   submit.disabled = true;
-  notice.classList.add('show');
 
   try {
     let result;
@@ -121,25 +159,51 @@
         password,
         options: { data: { name } }
       });
+
       if (result.error) throw result.error;
-      notice.textContent = result.data.session
-        ? 'Conta criada com sucesso!'
-        : 'Cadastro iniciado! Confira seu e-mail para confirmar a conta.';
+
+      showNotice(
+        result.data.session
+          ? 'Conta criada com sucesso!'
+          : 'Cadastro iniciado! Confira seu e-mail para confirmar a conta.'
+      );
+
     } else if (mode === 'recovery') {
-      result = await entrelinhasSupabase.auth.resetPasswordForEmail(email);
+      result = await entrelinhasSupabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + window.location.pathname
+      });
+
       if (result.error) throw result.error;
-      notice.textContent = 'Se o e-mail estiver cadastrado, você receberá as instruções de recuperação.';
+
+      showNotice(
+        'Se o e-mail estiver cadastrado, você receberá instruções de recuperação.'
+      );
+
     } else {
-      result = await entrelinhasSupabase.auth.signInWithPassword({ email, password });
+      result = await entrelinhasSupabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
       if (result.error) throw result.error;
-      notice.textContent = 'Login realizado com sucesso!';
+
+      showNotice('Login realizado com sucesso!');
     }
+
   } catch (error) {
-    notice.textContent = 'Não foi possível concluir. Verifique os dados e tente novamente.';
+    console.error('Erro de autenticação:', error);
+
+    showNotice(
+      'Não foi possível concluir. Confira os dados e tente novamente. ' +
+      'Se o problema continuar, verifique as configurações do Supabase.'
+    );
+
   } finally {
     submit.disabled = false;
   }
 });
+
+render('login');
   </script>
 </body>
 </html>
