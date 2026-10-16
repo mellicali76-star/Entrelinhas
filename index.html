@@ -66,7 +66,12 @@
     </section>
   </main>
   <div class="footer">ENTRELINHAS · UM REFÚGIO PARA QUEM ESCREVE</div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+   const entrelinhasSupabase = window.supabase.createClient(
+  'https://zdzjyruvcvvqcpyhqfys.supabase.co/rest/v1/'
+  '  https:// sb_publishable_HNifDynnY22tSg_gSD_5aQ_7k7UBmbn'
+);
     const form = document.querySelector('#auth-form');
     const title = document.querySelector('#form-title');
     const subtitle = document.querySelector('#form-subtitle');
@@ -97,12 +102,44 @@
       notice.classList.add('show');
     }
     switchMode.addEventListener('click', () => render(mode === 'signup' ? 'login' : 'signup'));
-    forgot.addEventListener('click', () => render('recovery'));
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      notice.textContent = 'A tela está pronta para a próxima etapa, mas o login ainda não está conectado. Nenhum dado foi enviado.';
-      notice.classList.add('show');
-    });
+    form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const email = document.querySelector('#email').value.trim();
+  const password = document.querySelector('#password').value;
+  const name = document.querySelector('#name').value.trim();
+
+  submit.disabled = true;
+  notice.classList.add('show');
+
+  try {
+    let result;
+
+    if (mode === 'signup') {
+      result = await entrelinhasSupabase.auth.signUp({
+        email,
+        password,
+        options: { data: { name } }
+      });
+      if (result.error) throw result.error;
+      notice.textContent = result.data.session
+        ? 'Conta criada com sucesso!'
+        : 'Cadastro iniciado! Confira seu e-mail para confirmar a conta.';
+    } else if (mode === 'recovery') {
+      result = await entrelinhasSupabase.auth.resetPasswordForEmail(email);
+      if (result.error) throw result.error;
+      notice.textContent = 'Se o e-mail estiver cadastrado, você receberá as instruções de recuperação.';
+    } else {
+      result = await entrelinhasSupabase.auth.signInWithPassword({ email, password });
+      if (result.error) throw result.error;
+      notice.textContent = 'Login realizado com sucesso!';
+    }
+  } catch (error) {
+    notice.textContent = 'Não foi possível concluir. Verifique os dados e tente novamente.';
+  } finally {
+    submit.disabled = false;
+  }
+});
   </script>
 </body>
 </html>
